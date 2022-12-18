@@ -10,13 +10,13 @@ defmodule Tcp.Server do
   def accept(port, opts) do
     {:ok, listen_socket} = :gen_tcp.listen(port, opts)
 
-    Logger.info(">> Listening on #{port}")
+    Logger.info("Listening on #{port}")
 
     loop_acceptor(listen_socket)
   end
 
   def loop_acceptor(listen_socket) do
-    Logger.info(">> Accepting connections")
+    Logger.info("Accepting connections")
     {:ok, socket} = :gen_tcp.accept(listen_socket)
 
     {:ok, pid} = Connection.start_link(socket)

@@ -19,12 +19,12 @@ defmodule Tcp.Server.Connection do
   # TCP callbacks
 
   def handle_info({:tcp, socket, data}, state) do
-    IO.inspect(data, label: "TCP data")
+    Logger.info("TCP DATA: #{inspect(data)}")
     {:noreply, state}
   end
 
   def handle_info({:tcp_closed, socket}, state) do
-    IO.inspect(socket, label: "TCP Closed")
+    Logger.info(" TCP closed")
     Process.exit(self(), :normal)
   end
 

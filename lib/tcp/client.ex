@@ -18,7 +18,7 @@ defmodule Tcp.Client do
   def init([host, port, opts]) do
     {:ok, socket} = :gen_tcp.connect(host, port, opts)
 
-    Logger.info(">> Connected to #{Tuple.to_list(host) |> Enum.join(".")}:#{port}")
+    Logger.info("Connected to #{Tuple.to_list(host) |> Enum.join(".")}:#{port}")
 
     {:ok, socket}
   end
@@ -30,7 +30,7 @@ defmodule Tcp.Client do
   end
 
   def handle_call(:close, _from, socket) do
-    Logger.info(">> Closing #{inspect(socket)}")
+    Logger.info("Closing socket: #{inspect(socket)}")
     :gen_tcp.close(socket)
 
     {:reply, :ok, socket}
