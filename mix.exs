@@ -1,9 +1,9 @@
-defmodule Tcp.MixProject do
+defmodule Comms.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :tcp,
+      app: :comms,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,

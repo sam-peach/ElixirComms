@@ -3,6 +3,6 @@ defmodule TcpTest do
   doctest Tcp
 
   test "greets the world" do
-    assert Tcp.hello() == :world
+    assert Comms.hello() == :world
   end
 end

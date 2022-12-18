@@ -1,4 +1,4 @@
-defmodule Tcp.Client do
+defmodule Comms.Tcp.Client do
   use GenServer
 
   require Logger
@@ -16,7 +16,7 @@ defmodule Tcp.Client do
   end
 
   def init([host, port, opts]) do
-    {:ok, socket} = :gen_tcp.connect(host, port, opts)
+    {:ok, socket} = :gen_tcp.connect(host, port, [active: false] ++ opts)
 
     Logger.info("Connected to #{Tuple.to_list(host) |> Enum.join(".")}:#{port}")
 
@@ -26,7 +26,9 @@ defmodule Tcp.Client do
   def handle_call({:send, data}, _from, socket) do
     :gen_tcp.send(socket, data)
 
-    {:reply, :ok, socket}
+    resp = :gen_tcp.recv(socket, 0)
+
+    {:reply, resp, socket}
   end
 
   def handle_call(:close, _from, socket) do
@@ -36,12 +38,6 @@ defmodule Tcp.Client do
     {:reply, :ok, socket}
   end
 
-  def handle_info({:tcp, _socket, data}, state) do
-    IO.inspect(data, label: "TCP received")
-
-    {:noreply, state}
-  end
-
   def handle_info({:tcp_closed, socket}, state) do
     IO.inspect(socket, label: "Closed")
 
@@ -49,7 +45,7 @@ defmodule Tcp.Client do
   end
 
   def handle_info({:tcp_error, socket, reason}, state) do
-    IO.inspect(socket, label: "connection closed dut to #{reason}")
+    IO.inspect(socket, label: "Connection closed due to #{reason}")
 
     {:noreply, state}
   end
